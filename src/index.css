@@ -1,0 +1,213 @@
+/* index.css — CMYK-themed Dashboard UI */
+
+/* ✅ Global reset & typography */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* 🎨 CMYK Gradient Background */
+  background: linear-gradient(135deg, #00BCD4, #E91E63, #FFEB3B);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+
+  color: #212121;
+  min-height: 100vh;
+}
+
+/* Smooth gradient animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ✅ Prevent overlap with fixed navbar */
+main,
+.main-container {
+  padding-top: 90px !important;
+}
+
+/* Universal smooth transitions */
+* {
+  transition: all 0.25s ease-in-out;
+}
+
+/* ====== 🌈 CMYK UI Elements ====== */
+
+/* Navbar */
+.navbar {
+  background-color: #212121 !important; /* Deep black */
+  border-bottom: 2px solid #00BCD4;
+}
+
+.navbar-brand span {
+  color: #FFEB3B !important;
+}
+
+/* Buttons */
+button,
+.btn {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+}
+
+.btn-primary {
+  background-color: #00BCD4 !important; /* Cyan */
+  border: none !important;
+}
+.btn-primary:hover {
+  background-color: #0097a7 !important;
+}
+
+.btn-danger {
+  background-color: #E91E63 !important; /* Magenta */
+  border: none !important;
+}
+.btn-danger:hover {
+  background-color: #ad1457 !important;
+}
+
+/* Cards (Dashboard Stats) */
+.card,
+.custom-card {
+  border-radius: 16px !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+  transition: transform 0.2s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Individual CMYK Colors for different sections */
+.card-cyan {
+  background: linear-gradient(135deg, #00BCD4, #0097A7);
+}
+.card-magenta {
+  background: linear-gradient(135deg, #E91E63, #AD1457);
+}
+.card-yellow {
+  background: linear-gradient(135deg, #FFEB3B, #FBC02D);
+  color: #212121 !important;
+}
+.card-black {
+  background: linear-gradient(135deg, #212121, #424242);
+}
+
+/* Tables */
+.table {
+  border-radius: 10px !important;
+  background: #ffffff !important;
+}
+.table th {
+  background-color: #00BCD4 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 188, 212, 0.1) !important;
+}
+
+/* Modals */
+.modal-content {
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  border: none !important;
+  color: #212121 !important;
+}
+
+/* Form Inputs */
+.form-control,
+.form-select {
+  border-radius: 10px !important;
+  border: 1px solid #dcdfe6 !important;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #00BCD4 !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.25) !important;
+}
+
+/* Toasts */
+.Toastify__toast {
+  border-radius: 10px !important;
+}
+
+/* Footer or bottom area */
+.footer {
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  background-color: #212121;
+  border-top: 2px solid #FFEB3B;
+}
+
+/* ====== 🌈 HSB Dashboard Overview Cards ====== */
+
+/* Base card style */
+.hsb-card {
+  border: none !important;
+  border-radius: 16px !important;
+  color: #fff !important;
+  text-align: center;
+  padding: 2rem !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hsb-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* HSB gradient variants */
+.hsb-1 {
+  background: linear-gradient(135deg, hsl(200, 85%, 55%), hsl(210, 90%, 45%)); /* Blue tone */
+}
+.hsb-2 {
+  background: linear-gradient(135deg, hsl(330, 80%, 55%), hsl(340, 85%, 45%)); /* Pink / Magenta */
+}
+.hsb-3 {
+  background: linear-gradient(135deg, hsl(45, 90%, 55%), hsl(50, 90%, 45%)); /* Yellow / Amber */
+  color: #222 !important;
+}
+.hsb-4 {
+  background: linear-gradient(135deg, hsl(150, 70%, 45%), hsl(160, 75%, 40%)); /* Green / Teal */
+}
+.hsb-5 {
+  background: linear-gradient(135deg, hsl(260, 80%, 60%), hsl(270, 75%, 45%)); /* Violet */
+}
+.hsb-6 {
+  background: linear-gradient(135deg, hsl(10, 85%, 55%), hsl(15, 80%, 45%)); /* Red / Coral */
+}
+
+/* ===== HSB Pulse Animation ===== */
+.hsb-card {
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+.hsb-card:hover {
+  transform: translateY(-5px);
+}
+
+.hsb-pulse {
+  animation: pulseGlow 4s infinite alternate;
+}
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+  100% { box-shadow: 0 0 40px rgba(255,255,255,0.6); }
+}
+
+/* Color variants for glowing cards */
+.hsb-blue { background: linear-gradient(135deg, hsl(210, 85%, 45%), hsl(210, 85%, 25%)); }
+.hsb-green { background: linear-gradient(135deg, hsl(140, 80%, 40%), hsl(140, 80%, 20%)); }
+.hsb-yellow { background: linear-gradient(135deg, hsl(50, 90%, 50%), hsl(50, 90%, 30%)); }
+.hsb-red { background: linear-gradient(135deg, hsl(10, 85%, 50%), hsl(10, 85%, 30%)); }
