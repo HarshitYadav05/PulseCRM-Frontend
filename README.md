@@ -1,21 +1,35 @@
 🚀 PulseCRM Frontend
+
 A modern, clean, and responsive frontend for PulseCRM, a MERN-based Customer Relationship Management system.
 
 📌 Features
+
 🔐 Secure Authentication (JWT-based login/signup)
+
 📊 Interactive Dashboard
+
 👥 Manage Leads & Customers
+
 🔄 API Integrated (Axios + Protected Routes)
+
 ⚙️ React Context API for global state
+
 🔔 Reusable UI Components
+
 📁 Clean & Modular Folder Structure
 
 🛠️ Tech Stack
+
 Frontend:
+
 React.js
+
 React Router
+
 Axios
+
 Context API
+
 CSS / Responsive UI
 
 📁 Project Structure
@@ -42,14 +56,21 @@ REACT_APP_API_URL=http://localhost:5000/api
 npm start
 
 🔧 Environment Variables
+
 The frontend requires a .env file:
+
 REACT_APP_API_URL=http://localhost:5000/api
 
 📝 Future Improvements
+
 📊 Add more dashboard analytics & charts
+
 🌙 Add dark/light theme toggle
+
 🔐 Add role-based access control
+
 🎨 Improve UI component system
+
 🎯 Author
 
 Harshit Raj Yadav
