@@ -74,6 +74,7 @@ REACT_APP_API_URL=http://localhost:5000/api
 🎯 Author
 
 Harshit Raj Yadav
+
 Frontend Developer | MERN Stack Enthusiast
 
 ⭐ If you like this project, consider giving it a star!
