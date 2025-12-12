@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import api from "../api/axiosConfig";
 
-// ✅ Animated Counter Component
+// Animated Counter
 const AnimatedNumber = ({ value }) => {
   const [displayValue, setDisplayValue] = useState(0);
 
@@ -43,16 +43,18 @@ const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [newLead, setNewLead] = useState({ name: "", email: "", status: "" });
 
+  // ✅ FIXED API ROUTES
   const fetchDashboardData = async () => {
     try {
       const [leadRes, custRes] = await Promise.all([
-        api.get("/leads"),
-        api.get("/customers"),
+        api.get("/api/leads"),
+        api.get("/api/customers"),
       ]);
-      setLeads(leadRes.data);
-      setCustomers(custRes.data);
+
+      setLeads(Array.isArray(leadRes.data) ? leadRes.data : []);
+      setCustomers(Array.isArray(custRes.data) ? custRes.data : []);
     } catch (error) {
-      console.error(error);
+      console.error("Dashboard Fetch Error:", error);
       toast.error("Failed to fetch dashboard data");
     }
   };
@@ -68,7 +70,7 @@ const Dashboard = () => {
     }
 
     try {
-      await api.post("/leads", newLead);
+      await api.post("/api/leads", newLead);
       toast.success("Lead added successfully!");
       setShowModal(false);
       setNewLead({ name: "", email: "", status: "" });
@@ -84,9 +86,12 @@ const Dashboard = () => {
     { name: "Customers", count: customers.length },
   ];
 
-  const activeLeads = leads.filter(
-    (l) => l.status === "Contacted" || l.status === "Qualified"
-  ).length;
+  // Prevent crash if leads is not an array
+  const activeLeads = Array.isArray(leads)
+    ? leads.filter(
+        (l) => l.status === "Contacted" || l.status === "Qualified"
+      ).length
+    : 0;
 
   const conversionRate =
     leads.length > 0 ? ((customers.length / leads.length) * 100).toFixed(1) : 0;
@@ -102,149 +107,91 @@ const Dashboard = () => {
         color: "#212121",
       }}
     >
-      {/* Header */}
+      {/* HEADER */}
       <div className="d-flex justify-content-between align-items-center mb-5 px-4">
-        <h2
-          className="fw-bold mb-0"
-          style={{ letterSpacing: "1px", color: "#212121" }}
-        >
-          💼 Dashboard Overview
-        </h2>
+        <h2 className="fw-bold mb-0">💼 Dashboard Overview</h2>
         <Button
           variant="dark"
           className="px-4 py-2 rounded-pill"
           onClick={() => setShowModal(true)}
-          style={{
-            background: "#212121",
-            color: "#FFEB3B",
-            border: "2px solid #FFEB3B",
-            fontWeight: "600",
-          }}
         >
           ➕ Add Lead
         </Button>
       </div>
 
-      {/* Stat Cards */}
+      {/* STATS */}
       <div className="container px-4 mb-5">
         <div className="row g-4 justify-content-center">
+
           {/* Total Leads */}
           <div className="col-md-3">
-            <Card className="hsb-card text-center p-4 border-0 hsb-pulse hsb-blue">
+            <Card className="hsb-card text-center p-4 border-0 hsb-blue">
               <Card.Body>
-                <h4 className="fw-semibold">Total Leads</h4>
-                <h2 className="fw-bold">
-                  <AnimatedNumber value={leads.length} />
-                </h2>
-                <Badge bg="light" text="dark" className="mt-2">
-                  Updated
-                </Badge>
+                <h4>Total Leads</h4>
+                <h2><AnimatedNumber value={leads.length} /></h2>
               </Card.Body>
             </Card>
           </div>
 
           {/* Total Customers */}
           <div className="col-md-3">
-            <Card className="hsb-card text-center p-4 border-0 hsb-pulse hsb-green">
+            <Card className="hsb-card text-center p-4 border-0 hsb-green">
               <Card.Body>
-                <h4 className="fw-semibold">Total Customers</h4>
-                <h2 className="fw-bold">
-                  <AnimatedNumber value={customers.length} />
-                </h2>
-                <Badge bg="light" text="dark" className="mt-2">
-                  Active
-                </Badge>
+                <h4>Total Customers</h4>
+                <h2><AnimatedNumber value={customers.length} /></h2>
               </Card.Body>
             </Card>
           </div>
 
           {/* Active Leads */}
           <div className="col-md-3">
-            <Card className="hsb-card text-center p-4 border-0 hsb-pulse hsb-yellow">
+            <Card className="hsb-card text-center p-4 border-0 hsb-yellow">
               <Card.Body>
-                <h4 className="fw-semibold">Active Leads</h4>
-                <h2 className="fw-bold">
-                  <AnimatedNumber value={activeLeads} />
-                </h2>
-                <Badge bg="light" text="dark" className="mt-2">
-                  Live
-                </Badge>
+                <h4>Active Leads</h4>
+                <h2><AnimatedNumber value={activeLeads} /></h2>
               </Card.Body>
             </Card>
           </div>
 
           {/* Conversion Rate */}
           <div className="col-md-3">
-            <Card className="hsb-card text-center p-4 border-0 hsb-pulse hsb-red">
+            <Card className="hsb-card text-center p-4 border-0 hsb-red">
               <Card.Body>
-                <h4 className="fw-semibold">Conversion Rate</h4>
-                <h2 className="fw-bold">
-                  <AnimatedNumber value={parseFloat(conversionRate)} />%
-                </h2>
-                <Badge bg="light" text="dark" className="mt-2">
-                  Auto
-                </Badge>
+                <h4>Conversion Rate</h4>
+                <h2><AnimatedNumber value={parseFloat(conversionRate)} />%</h2>
               </Card.Body>
             </Card>
           </div>
+
         </div>
       </div>
 
-      {/* Chart */}
-      <Card
-        className="p-4 border-0 mx-4"
-        style={{
-          background: "#ffffffd9",
-          borderRadius: "20px",
-          boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
-        }}
-      >
-        <h5 className="mb-4 fw-semibold" style={{ color: "#212121" }}>
-          📊 Performance Overview
-        </h5>
+      {/* CHART */}
+      <Card className="p-4 border-0 mx-4">
+        <h5>📊 Performance Overview</h5>
         <div style={{ height: 300 }}>
           <ResponsiveContainer>
             <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis dataKey="name" stroke="#555" />
-              <YAxis stroke="#555" />
-              <Tooltip
-                contentStyle={{
-                  background: "#fff",
-                  borderRadius: "10px",
-                  border: "1px solid #ccc",
-                }}
-              />
-              <Bar dataKey="count" fill="hsl(210, 90%, 45%)" radius={[6, 6, 0, 0]} />
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="count" fill="#2196F3" />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </Card>
 
-      {/* Add Lead Modal */}
-      <Modal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        centered
-        contentClassName="border-0"
-      >
-        <Modal.Header
-          closeButton
-          style={{
-            background: "#00BCD4",
-            color: "#fff",
-            borderBottom: "none",
-          }}
-        >
+      {/* MODAL */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
           <Modal.Title>Add New Lead</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ background: "#f7f9fc" }}>
+        <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Enter name"
                 value={newLead.name}
                 onChange={(e) =>
                   setNewLead({ ...newLead, name: e.target.value })
@@ -255,8 +202,6 @@ const Dashboard = () => {
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control
-                type="email"
-                placeholder="Enter email"
                 value={newLead.email}
                 onChange={(e) =>
                   setNewLead({ ...newLead, email: e.target.value })
@@ -280,21 +225,10 @@ const Dashboard = () => {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer style={{ background: "#f1f1f1" }}>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancel
-          </Button>
-          <Button
-            style={{
-              backgroundColor: "#00BCD4",
-              border: "none",
-              color: "#fff",
-              fontWeight: "600",
-            }}
-            onClick={handleAddLead}
-          >
-            Save Lead
-          </Button>
+
+        <Modal.Footer>
+          <Button onClick={() => setShowModal(false)}>Cancel</Button>
+          <Button onClick={handleAddLead}>Save Lead</Button>
         </Modal.Footer>
       </Modal>
     </div>
