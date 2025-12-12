@@ -5,54 +5,28 @@ import { Form, Button, Card, Container, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 const Login = ({ setUser }) => {
-
-  // 🔥 DEBUG LINE — CONFIRM THIS FILE IS ACTUALLY BEING USED
-  console.log("🔥 LOGIN COMPONENT RENDERED — FILE IS ACTIVE");
-
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      console.log("📤 Sending login request:", formData);
-
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
+        { email, password }
       );
 
-      console.log("✅ Login successful:", data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      if (setUser) setUser(data);
 
-      // ================================
-      // 🔥 ALWAYS SAVE CLEAN STRUCTURE
-      // ================================
-      const userInfo = {
-        token: data.token,
-        user: data.user,
-      };
-
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-      if (setUser) setUser(userInfo);
-
-      toast.success("Login successful!");
+      toast.success("Login successful");
       navigate("/dashboard");
     } catch (error) {
-      console.error("❌ Login failed:", error.response?.data || error.message);
       toast.error(
         error.response?.data?.message || "Invalid email or password"
       );
@@ -68,13 +42,11 @@ const Login = ({ setUser }) => {
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </Form.Group>
@@ -83,21 +55,18 @@ const Login = ({ setUser }) => {
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </Form.Group>
 
           <Button
-            variant="primary"
             type="submit"
             className="w-100"
             disabled={loading}
           >
-            {loading ? <Spinner animation="border" size="sm" /> : "Login"}
+            {loading ? <Spinner size="sm" /> : "Login"}
           </Button>
         </Form>
 

@@ -1,75 +1,65 @@
-import api from "./axiosConfig"; // Centralized axios instance
+import api from "./axiosConfig";
 
-// ✅ Base API URL — uses .env or defaults to localhost
+// ✅ BASE URL (NO /api here)
 const API_BASE_URL =
-  process.env.REACT_APP_API_URL?.replace(/\/$/, "") || "http://localhost:5000/api";
+  process.env.REACT_APP_API_URL?.replace(/\/$/, "") ||
+  "http://localhost:5000";
 
-// ✅ Helper: safely build Authorization headers
+// ✅ Auth header helper
 const getAuthConfig = () => {
-  try {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    const token = userInfo?.token;
-    return {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : "",
-        "Content-Type": "application/json",
-      },
-    };
-  } catch {
+  const userInfo = localStorage.getItem("userInfo");
+
+  if (!userInfo) {
     return {
       headers: { "Content-Type": "application/json" },
     };
   }
+
+  const { token } = JSON.parse(userInfo);
+
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
 };
 
 // ✅ Fetch all leads
 export const getLeads = async () => {
-  try {
-    const config = getAuthConfig();
-    const { data } = await api.get(`${API_BASE_URL}/leads`, config);
-    console.log("✅ Leads fetched:", data);
-    return data; // Expected: array of leads
-  } catch (error) {
-    console.error("❌ Error fetching leads:", error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || "Failed to fetch leads");
-  }
+  const config = getAuthConfig();
+  const { data } = await api.get(`${API_BASE_URL}/api/leads`, config);
+  return data;
 };
 
-// ✅ Create a new lead
+// ✅ Create new lead
 export const createLead = async (leadData) => {
-  try {
-    const config = getAuthConfig();
-    const { data } = await api.post(`${API_BASE_URL}/leads`, leadData, config);
-    console.log("✅ Lead created:", data);
-    return data;
-  } catch (error) {
-    console.error("❌ Error creating lead:", error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || "Failed to create lead");
-  }
+  const config = getAuthConfig();
+  const { data } = await api.post(
+    `${API_BASE_URL}/api/leads`,
+    leadData,
+    config
+  );
+  return data;
 };
 
-// ✅ Update an existing lead
+// ✅ Update lead
 export const updateLead = async (id, leadData) => {
-  try {
-    const config = getAuthConfig();
-    const { data } = await api.put(`${API_BASE_URL}/leads/${id}`, leadData, config);
-    console.log("✅ Lead updated:", data);
-    return data;
-  } catch (error) {
-    console.error("❌ Error updating lead:", error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || "Failed to update lead");
-  }
+  const config = getAuthConfig();
+  const { data } = await api.put(
+    `${API_BASE_URL}/api/leads/${id}`,
+    leadData,
+    config
+  );
+  return data;
 };
 
-// ✅ Delete a lead
+// ✅ Delete lead
 export const deleteLead = async (id) => {
-  try {
-    const config = getAuthConfig();
-    const { data } = await api.delete(`${API_BASE_URL}/leads/${id}`, config);
-    console.log("✅ Lead deleted:", data);
-    return data;
-  } catch (error) {
-    console.error("❌ Error deleting lead:", error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || "Failed to delete lead");
-  }
+  const config = getAuthConfig();
+  const { data } = await api.delete(
+    `${API_BASE_URL}/api/leads/${id}`,
+    config
+  );
+  return data;
 };

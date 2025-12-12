@@ -17,8 +17,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
 
-// ⭐ IMPORTANT: Correct navbar import
+// ⭐ Navbar
 import CustomNavbar from "./components/Navbar";
+
+// ⭐ TEST: Check if .env is working
+console.log("🔍 API URL FROM ENV =", process.env.REACT_APP_API_URL);
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -34,7 +37,7 @@ function App() {
 
   return (
     <Router>
-      <CustomNavbar />  {/* <-- your logo navbar */}
+      <CustomNavbar />
 
       <main>
         <Container className="main-container mt-4">
