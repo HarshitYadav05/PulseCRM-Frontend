@@ -2,6 +2,14 @@
 
 A modern, clean, and responsive frontend for PulseCRM, a MERN-based Customer Relationship Management system.
 
+🔗 Live Demo:
+
+https://your-vercel-link.vercel.app
+
+⚙️ Backend API:
+
+https://your-backend-link.railway.app/api
+
 📌 Features
 
 🔐 Secure Authentication (JWT-based login/signup)
