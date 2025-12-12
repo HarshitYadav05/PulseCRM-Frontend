@@ -65,8 +65,6 @@ REACT_APP_API_URL=http://localhost:5000/api
 
 📊 Add more dashboard analytics & charts
 
-🌙 Add dark/light theme toggle
-
 🔐 Add role-based access control
 
 🎨 Improve UI component system
