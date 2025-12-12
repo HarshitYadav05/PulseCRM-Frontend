@@ -1,32 +1,21 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: process.env.REACT_APP_API_URL,  // MUST include /api in .env
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Attach token automatically to every request
-api.interceptors.request.use(
-  (config) => {
-    // Read userInfo from localStorage
-    const userInfoString = localStorage.getItem("userInfo");
-
-    if (userInfoString) {
-      const userInfo = JSON.parse(userInfoString);
-
-      // Extract ONLY the token string (important!)
-      const token = userInfo?.token;
-
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+api.interceptors.request.use((config) => {
+  const userInfo = localStorage.getItem("userInfo");
+  if (userInfo) {
+    const { token } = JSON.parse(userInfo);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  }
+  return config;
+});
 
 export default api;

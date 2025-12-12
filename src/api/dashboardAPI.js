@@ -1,14 +1,12 @@
 import api from "./axiosConfig";
 
-// ✅ Fetch dashboard data (Protected route)
+// Fetch dashboard data
 export const getDashboardData = async () => {
   try {
-    const response = await api.get("/dashboard");
-    return response.data;
+    const { data } = await api.get("/dashboard");  // Axios will turn into /api/dashboard
+    return data;
   } catch (error) {
     console.error("❌ Dashboard API Error:", error.response?.data || error.message);
-    throw new Error(
-      error.response?.data?.message || "Failed to fetch dashboard data."
-    );
+    throw new Error(error.response?.data?.message || "Failed to fetch dashboard data.");
   }
 };
