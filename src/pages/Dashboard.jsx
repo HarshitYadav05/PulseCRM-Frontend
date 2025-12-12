@@ -51,8 +51,8 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [leadRes, custRes] = await Promise.all([
-        api.get("/api/leads"),
-        api.get("/api/customers"),
+        api.get("/leads"),
+        api.get("/customers"),
       ]);
 
       // FORCE data to always be an array
